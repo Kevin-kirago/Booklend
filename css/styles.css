@@ -1,0 +1,29 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	color: #555;
+	font-family: Open Sans;
+	font-size: 16px;
+	position: relative;
+	height: 100vh;
+	font-weight: 400;
+}
+
+/**********************************************
+*** Left PART
+**********************************************/
+
+.left {
+	width: 50%;
+	height: 100%;
+	border-right: 1px solid #555;
+	background-image: linear-gradient(rgb(229, 57, 53), rgb(227, 93, 91));
+}
+
+/**********************************************
+*** Right PART
+**********************************************/
