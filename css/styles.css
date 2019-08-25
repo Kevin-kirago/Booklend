@@ -58,9 +58,9 @@ body {
 .form__input {
 	width: 100%;
 	padding: 8px 15px;
+	color: #000;
 	line-height: 1.7;
 	font-size: 15px;
-	font-weight: 300;
 	border: 1px solid #ced4da;
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
