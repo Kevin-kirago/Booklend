@@ -7,14 +7,44 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Book Lending App</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/ionicons.min.css">
         <link rel="stylesheet" href="css/styles.css">
     </head>
 
     <body>
 
-        <div class="left"></div>
+        <div class="left">
+            <div class="heading">
+                <h1 class="heading__primary">Book Lending App</h1>
+            </div>
+
+            <div class="section__form">
+                <form class="form">
+                    <div class="form__input-container">
+                        <label for="title" class="form__label">Title</label>
+                        <input type="text" name="title" class="form__input">
+                    </div>
+                    <div class="form__input-container">
+                        <label for="author" class="form__label">Author</label>
+                        <input type="text" name="author" class="form__input">
+                    </div>
+                    <div class="form__input-container">
+                        <label for="book" class="form__label">ISBN#</label>
+                        <input type="number" name="book" class="form__input">
+                    </div>
+                    <div class="button">
+                        <input type="submit" value="Sign up" class="form__button">
+                    </div>
+                </form>
+            </div>
+
+            <div class="footer">
+                <p class="footer__Content">
+                    booklendingapp &copy;2019.
+                </p>
+            </div>
+        </div>
 
         <div class="right"></div>
 
