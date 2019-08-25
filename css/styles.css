@@ -4,6 +4,12 @@
 	box-sizing: border-box;
 }
 
+.clearfix::after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
 body {
 	color: #555;
 	font-family: "Lato", sans-serif;
@@ -19,7 +25,8 @@ body {
 
 .left {
 	position: relative;
-	width: 50vw;
+	display: inline-block;
+	width: 50%;
 	height: 100%;
 	background-position: center;
 	background-size: cover;
@@ -119,3 +126,52 @@ body {
 /**********************************************
 *** Right PART
 **********************************************/
+.right {
+	position: relative;
+	float: right;
+	width: 50%;
+	height: 100%;
+	background-color: #fff;
+}
+
+.content__holder {
+	margin: 60px;
+}
+
+.content__holder h4 {
+	color: #000;
+	font-size: 25px;
+}
+
+.item {
+	padding: 13px 0;
+	border-bottom: 1px solid #e7e7e7;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.item:first-child {
+	margin-top: 30px;
+}
+
+.item:nth-child(even) {
+	background-color: #f7f7f7;
+}
+
+.item__label {
+	color: #000;
+	margin-right: 5px;
+}
+
+.item__delete--btn {
+	font-size: 20px;
+	color: #3c3b3f;
+	background: none;
+	border: none;
+	padding-right: 5px;
+}
+
+.item__delete--btn:focus {
+	outline: none;
+}
