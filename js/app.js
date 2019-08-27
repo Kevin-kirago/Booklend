@@ -37,11 +37,9 @@ var Model = (function() {
 
 		deleteBookItem: function(id) {
 			var index, ids;
-
 			ids = book.map(function(current) {
 				return current.id;
 			});
-
 			index = ids.indexOf(id);
 
 			if (index !== -1) {
@@ -156,20 +154,22 @@ var Controller = (function(md, ui) {
 	};
 
 	var ctrlDeleteItem = function(event) {
-		var itemID, splitID, Id;
+		var itemID, splitID, id, bookItem;
 		itemID = event.target.parentNode.parentNode.parentNode.id;
 
 		if (itemID) {
 			splitID = itemID.split("-");
+			bookItem = splitID[0];
 			id = splitID[1];
 
 			// 1. Delete item from the data structure
 			md.deleteBookItem(id);
 			console.log(md.testing());
-		}
 
-		// 2. Delete item from the ui
-		// 3. Update the ui
+			// 2. Delete item from the ui
+
+			ui.deleteBookItem(itemID);
+		}
 	};
 
 	return {
