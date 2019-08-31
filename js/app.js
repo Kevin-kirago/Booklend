@@ -4,7 +4,6 @@
 
 var Model = (function() {
 	// Create an object to store data
-
 	var Book = function(title, author, isbn, id) {
 		this.title = title;
 		this.author = author;
@@ -12,15 +11,17 @@ var Model = (function() {
 		this.id = id;
 	};
 
-	var book = [];
+	var data = {
+		book: []
+	};
 
 	return {
 		addBookItem: function(title, author, isbn) {
 			var newBook, id;
 
 			// Generating a suitable id for each element
-			if (book.length > 0) {
-				id = book[book.length - 1].id + 1;
+			if (data.book.length > 0) {
+				id = data.book[data.book.length - 1].id + 1;
 			} else {
 				id = 0;
 			}
@@ -29,26 +30,31 @@ var Model = (function() {
 			newBook = new Book(title, author, isbn, id);
 
 			// push our new item to the array
-			book.push(newBook);
+			data.book.push(newBook);
 
 			// return the item
 			return newBook;
 		},
 
 		deleteBookItem: function(id) {
-			var index, ids;
-			ids = book.map(function(current) {
-				return current.id;
+			var ids, index;
+
+			// Get an array of ids
+			ids = data.book.map(function(el) {
+				return el.id;
 			});
+
+			// Get the index of the id
 			index = ids.indexOf(id);
 
 			if (index !== -1) {
-				book.splice(index, 1);
+				// Remove the element in the index specified
+				data.book.splice(index, 1);
 			}
 		},
 
 		testing: function() {
-			console.log(book);
+			console.log(data);
 		}
 	};
 })();
@@ -77,14 +83,14 @@ var View = (function() {
 
 			element = ".book__list";
 			html = `
-			<div class="item" id="item-${obj.id}">
-				<div class="item__content">
-					<div class="item__title"><span class="item__label">Name:</span>${obj.title}</div>
-					<div class="item__author"><span class="item__label">Author:</span>${obj.author}</div>
-					<div class="item__number"><span class="item__label">ISBN&nbsp;:</span>${obj.isbn}</div>
+			<div class="book" id="book-${obj.id}">
+				<div class="book__content">
+					<div class="book__title"><span class="book__label">Name:</span>${obj.title}</div>
+					<div class="book__author"><span class="book__label">Author:</span>${obj.author}</div>
+					<div class="book__number"><span class="book__label">ISBN&nbsp;:</span>${obj.isbn}</div>
 				</div>
-				<div class="item__delete">
-					<button class="item__delete--btn">
+				<div class="book__delete">
+					<button class="book__delete--btn">
 						<i class="ion-ios-close-outline"></i>
 					</button>
 				</div>
@@ -143,7 +149,6 @@ var Controller = (function(md, ui) {
 		if (input.title !== "" && input.author !== "" && !isNaN(input.isbn)) {
 			// 3. Add item to the model controller
 			newBookItem = md.addBookItem(input.title, input.author, input.isbn);
-			console.log(md.testing());
 
 			// 4. Add item to the view controller
 			ui.addBookItem(newBookItem);
@@ -154,20 +159,17 @@ var Controller = (function(md, ui) {
 	};
 
 	var ctrlDeleteItem = function(event) {
-		var itemID, splitID, id, bookItem;
+		var itemID, splitID, id;
 		itemID = event.target.parentNode.parentNode.parentNode.id;
 
 		if (itemID) {
 			splitID = itemID.split("-");
-			bookItem = splitID[0];
-			id = splitID[1];
+			id = parseInt(splitID[1]);
 
 			// 1. Delete item from the data structure
 			md.deleteBookItem(id);
-			console.log(md.testing());
 
 			// 2. Delete item from the ui
-
 			ui.deleteBookItem(itemID);
 		}
 	};

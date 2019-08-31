@@ -143,7 +143,7 @@ body {
 	font-size: 25px;
 }
 
-.item {
+.book {
 	padding: 13px 0;
 	border-bottom: 1px solid #e7e7e7;
 	display: flex;
@@ -151,20 +151,20 @@ body {
 	align-items: center;
 }
 
-.item:first-child {
+.book:first-child {
 	margin-top: 30px;
 }
 
-.item:nth-child(even) {
+.book:nth-child(even) {
 	background-color: #f7f7f7;
 }
 
-.item__label {
+.book__label {
 	color: #000;
 	margin-right: 5px;
 }
 
-.item__delete--btn {
+.book__delete--btn {
 	font-size: 20px;
 	color: #3c3b3f;
 	background: none;
@@ -172,6 +172,6 @@ body {
 	padding-right: 5px;
 }
 
-.item__delete--btn:focus {
+.book__delete--btn:focus {
 	outline: none;
 }
