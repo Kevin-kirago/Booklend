@@ -2,22 +2,22 @@
 // Model
 // ///////////////////////////////////////////////////////////////
 
-var Model = (function() {
+const Model = (function() {
 	// Create an object to store data
-	var Book = function(title, author, isbn, id) {
+	const Book = function(title, author, isbn, id) {
 		this.title = title;
 		this.author = author;
 		this.isbn = isbn;
 		this.id = id;
 	};
 
-	var data = {
+	const data = {
 		book: []
 	};
 
 	return {
 		addBookItem: function(title, author, isbn) {
-			var newBook, id;
+			let newBook, id;
 
 			// Generating a suitable id for each element
 			if (data.book.length > 0) {
@@ -37,7 +37,7 @@ var Model = (function() {
 		},
 
 		deleteBookItem: function(id) {
-			var ids, index;
+			let ids, index;
 
 			// Get an array of ids
 			ids = data.book.map(function(el) {
@@ -63,9 +63,7 @@ var Model = (function() {
 // View
 // ///////////////////////////////////////////////////////////////
 
-var View = (function() {
-	//
-
+const View = (function() {
 	return {
 		// 1. Get input values
 		getInput: function() {
@@ -79,7 +77,7 @@ var View = (function() {
 		// 2. Add the new item to the view
 
 		addBookItem: function(obj) {
-			var html, element;
+			let html, element;
 
 			element = ".book__list";
 			html = `
@@ -101,12 +99,12 @@ var View = (function() {
 		},
 
 		deleteBookItem: function(selectorId) {
-			var el = document.getElementById(selectorId);
+			const el = document.getElementById(selectorId);
 			el.parentNode.removeChild(el);
 		},
 
 		clearInputFields: function() {
-			var field;
+			let field;
 
 			field = document.getElementById("title");
 
@@ -123,14 +121,14 @@ var View = (function() {
 // Controller
 // ///////////////////////////////////////////////////////////////
 
-var Controller = (function(md, ui) {
+const Controller = (function(md, ui) {
 	//To do list
 	// 1. Add event handlers
 
-	var setUpEventListener = function() {
+	const setUpEventListener = function() {
 		document.querySelector(".form__button").addEventListener("click", ctrlAddItem);
 
-		document.addEventListener("keypress", function() {
+		document.addEventListener("keypress", event => {
 			if (event.keyCode === 13 || event.which === 13) {
 				ctrlAddItem();
 			}
@@ -139,8 +137,8 @@ var Controller = (function(md, ui) {
 		document.querySelector(".right").addEventListener("click", ctrlDeleteItem);
 	};
 
-	var ctrlAddItem = function() {
-		var input, newBookItem;
+	const ctrlAddItem = function() {
+		let input, newBookItem;
 
 		// 1. get data from the input fields
 		input = ui.getInput();
@@ -158,8 +156,8 @@ var Controller = (function(md, ui) {
 		}
 	};
 
-	var ctrlDeleteItem = function(event) {
-		var itemID, splitID, id;
+	const ctrlDeleteItem = function(event) {
+		let itemID, splitID, id;
 		itemID = event.target.parentNode.parentNode.parentNode.id;
 
 		if (itemID) {
@@ -182,3 +180,7 @@ var Controller = (function(md, ui) {
 	};
 })(Model, View);
 Controller.init();
+
+// Show alert
+// Data persistence with localstorage
+// UI improvements
