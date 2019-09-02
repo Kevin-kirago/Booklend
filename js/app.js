@@ -1,7 +1,6 @@
 // ///////////////////////////////////////////////////////////////
 // Model
 // ///////////////////////////////////////////////////////////////
-
 const Model = (function() {
 	// Create an object to store data
 	const Book = function(title, author, isbn, id) {
@@ -36,7 +35,7 @@ const Model = (function() {
 			return newBook;
 		},
 
-		deleteBookItem: function(id) {
+		removeBookItem: function(id) {
 			let ids, index;
 
 			// Get an array of ids
@@ -62,7 +61,6 @@ const Model = (function() {
 // ///////////////////////////////////////////////////////////////
 // View
 // ///////////////////////////////////////////////////////////////
-
 const View = (function() {
 	return {
 		// 1. Get input values
@@ -74,8 +72,21 @@ const View = (function() {
 			};
 		},
 
-		// 2. Add the new item to the view
+		// Display alert function
+		showAlert: function(message) {
+			let snackbar, element;
 
+			element = ".container";
+			snackbar = `<div class="snackbar">${message}</div>`;
+
+			document.querySelector(element).insertAdjacentHTML("beforeend", snackbar);
+
+			setTimeout(function() {
+				document.querySelector(".snackbar").remove();
+			}, 3000);
+		},
+
+		// 3. Add the new item to the ui
 		addBookItem: function(obj) {
 			let html, element;
 
@@ -98,11 +109,13 @@ const View = (function() {
 			document.querySelector(element).insertAdjacentHTML("beforeend", html);
 		},
 
+		// 4. Removing a book item from the ui
 		deleteBookItem: function(selectorId) {
 			const el = document.getElementById(selectorId);
 			el.parentNode.removeChild(el);
 		},
 
+		// 5. Clearing the inputs
 		clearInputFields: function() {
 			let field;
 
@@ -122,7 +135,7 @@ const View = (function() {
 // ///////////////////////////////////////////////////////////////
 
 const Controller = (function(md, ui) {
-	//To do list
+	// To do list
 	// 1. Add event handlers
 
 	const setUpEventListener = function() {
@@ -133,7 +146,6 @@ const Controller = (function(md, ui) {
 				ctrlAddItem();
 			}
 		});
-
 		document.querySelector(".right").addEventListener("click", ctrlDeleteItem);
 	};
 
@@ -151,8 +163,14 @@ const Controller = (function(md, ui) {
 			// 4. Add item to the view controller
 			ui.addBookItem(newBookItem);
 
-			// 5. clear the input fields
+			// 5. Show alert
+			ui.showAlert("Book added! success");
+
+			// 6. clear the input fields
 			ui.clearInputFields();
+		} else {
+			// 7. Show alert
+			ui.showAlert("Please fill in all the fields!");
 		}
 	};
 
@@ -165,7 +183,7 @@ const Controller = (function(md, ui) {
 			id = parseInt(splitID[1]);
 
 			// 1. Delete item from the data structure
-			md.deleteBookItem(id);
+			md.removeBookItem(id);
 
 			// 2. Delete item from the ui
 			ui.deleteBookItem(itemID);
@@ -181,6 +199,5 @@ const Controller = (function(md, ui) {
 })(Model, View);
 Controller.init();
 
-// Show alert
 // Data persistence with localstorage
 // UI improvements

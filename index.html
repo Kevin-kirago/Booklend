@@ -13,60 +13,64 @@
     </head>
 
     <body>
+        <div class="container">
+            <div class="left">
+                <div class="heading">
+                    <h1 class="heading__primary">Book Lending App</h1>
+                </div>
 
-        <div class="left">
-            <div class="heading">
-                <h1 class="heading__primary">Book Lending App</h1>
+                <div class="section__form">
+                    <div class="form">
+                        <div class="form__input-container">
+                            <label for="title" class="form__label">Title</label>
+                            <input type="text" name="title" class="form__input" id="title">
+                        </div>
+                        <div class="form__input-container">
+                            <label for="author" class="form__label">Author</label>
+                            <input type="text" name="author" class="form__input" id="author">
+                        </div>
+                        <div class="form__input-container">
+                            <label for="book" class="form__label">ISBN#</label>
+                            <input type="number" name="book" class="form__input" id="isbn">
+                        </div>
+                        <div class="button">
+                            <input type="submit" value="Add book" class="form__button">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <p class="footer__Content">
+                        booklendingapp &copy;2019.
+                    </p>
+                </div>
             </div>
 
-            <div class="section__form">
-                <div class="form">
-                    <div class="form__input-container">
-                        <label for="title" class="form__label">Title</label>
-                        <input type="text" name="title" class="form__input" id="title">
-                    </div>
-                    <div class="form__input-container">
-                        <label for="author" class="form__label">Author</label>
-                        <input type="text" name="author" class="form__input" id="author">
-                    </div>
-                    <div class="form__input-container">
-                        <label for="book" class="form__label">ISBN#</label>
-                        <input type="number" name="book" class="form__input" id="isbn">
-                    </div>
-                    <div class="button">
-                        <input type="submit" value="Add book" class="form__button">
+
+
+            <div class="right">
+
+                <div class="content__holder">
+                    <h4>Book Tracker</h4>
+
+                    <div class="book__list">
+                        <!-- <div class="item" id="item-0">
+                            <div class="item__content">
+                                <div class="item__title"><span class="item__label">Name:</span> Crispy Berry</div>
+                                <div class="item__author"><span class="item__label">Author:</span> Jonas schemmedtzer</div>
+                                <div class="item__number"><span class="item__label">ISBN&nbsp;:</span> dcsnrb9341/18</div>
+                            </div>
+                            <div class="item__delete">
+                                <button class="item__delete--btn">
+                                    <i class="ion-ios-close-outline"></i>
+                                </button>
+                            </div>
+                        </div> -->
+
                     </div>
                 </div>
             </div>
 
-            <div class="footer">
-                <p class="footer__Content">
-                    booklendingapp &copy;2019.
-                </p>
-            </div>
-        </div>
-
-        <div class="right">
-
-            <div class="content__holder">
-                <h4>Book Tracker</h4>
-
-                <div class="book__list">
-                    <!-- <div class="item" id="item-0">
-                        <div class="item__content">
-                            <div class="item__title"><span class="item__label">Name:</span> Crispy Berry</div>
-                            <div class="item__author"><span class="item__label">Author:</span> Jonas schemmedtzer</div>
-                            <div class="item__number"><span class="item__label">ISBN&nbsp;:</span> dcsnrb9341/18</div>
-                        </div>
-                        <div class="item__delete">
-                            <button class="item__delete--btn">
-                                <i class="ion-ios-close-outline"></i>
-                            </button>
-                        </div>
-                    </div> -->
-
-                </div>
-            </div>
         </div>
 
     </body>
