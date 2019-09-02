@@ -1,4 +1,43 @@
 // ///////////////////////////////////////////////////////////////
+// Storage Controller
+// ///////////////////////////////////////////////////////////////
+
+const Storage = (function() {
+	return {
+		// Add item to local storage
+		storeItem: function(book) {
+			let books;
+			if (localStorage.getItem("Books") === null) {
+				books = [];
+				// Push new item
+				books.push(book);
+				// Set ls
+				localStorage.setItem("Books", JSON.stringify(books));
+			} else {
+				// Get what is already in ls
+				books = JSON.parse(localStorage.getItem("Books"));
+
+				// Push new item
+				books.push(book);
+
+				// Re set ls
+				localStorage.setItem("Books", JSON.stringify(books));
+			}
+		},
+
+		getItemsFromStorage: function() {
+			let books;
+			if (localStorage.getItem("Books") === null) {
+				books = [];
+			} else {
+				books = JSON.parse(localStorage.getItem("Books"));
+			}
+			return books;
+		}
+	};
+})();
+
+// ///////////////////////////////////////////////////////////////
 // Model
 // ///////////////////////////////////////////////////////////////
 const Model = (function() {
@@ -10,17 +49,15 @@ const Model = (function() {
 		this.id = id;
 	};
 
-	const data = {
-		book: []
-	};
+	const data = Storage.getItemsFromStorage();
 
 	return {
 		addBookItem: function(title, author, isbn) {
 			let newBook, id;
 
 			// Generating a suitable id for each element
-			if (data.book.length > 0) {
-				id = data.book[data.book.length - 1].id + 1;
+			if (data.length > 0) {
+				id = data[data.length - 1].id + 1;
 			} else {
 				id = 0;
 			}
@@ -29,7 +66,7 @@ const Model = (function() {
 			newBook = new Book(title, author, isbn, id);
 
 			// push our new item to the array
-			data.book.push(newBook);
+			data.push(newBook);
 
 			// return the item
 			return newBook;
@@ -39,7 +76,7 @@ const Model = (function() {
 			let ids, index;
 
 			// Get an array of ids
-			ids = data.book.map(function(el) {
+			ids = data.map(function(el) {
 				return el.id;
 			});
 
@@ -48,8 +85,12 @@ const Model = (function() {
 
 			if (index !== -1) {
 				// Remove the element in the index specified
-				data.book.splice(index, 1);
+				data.splice(index, 1);
 			}
+		},
+
+		getBookItems: function() {
+			return data;
 		},
 
 		testing: function() {
@@ -62,13 +103,24 @@ const Model = (function() {
 // View
 // ///////////////////////////////////////////////////////////////
 const View = (function() {
+	const domStrings = {
+		title: "title",
+		author: "author",
+		isbn: "isbn",
+		container: ".container",
+		snackbar: ".snackbar",
+		bookContainer: ".book__list",
+		btn: ".form__button",
+		rightContainer: ".right"
+	};
+
 	return {
 		// 1. Get input values
 		getInput: function() {
 			return {
-				title: document.getElementById("title").value,
-				author: document.getElementById("author").value,
-				isbn: document.getElementById("isbn").value
+				title: document.getElementById(domStrings.title).value,
+				author: document.getElementById(domStrings.author).value,
+				isbn: document.getElementById(domStrings.isbn).value
 			};
 		},
 
@@ -76,13 +128,13 @@ const View = (function() {
 		showAlert: function(message) {
 			let snackbar, element;
 
-			element = ".container";
+			element = domStrings.container;
 			snackbar = `<div class="snackbar">${message}</div>`;
 
 			document.querySelector(element).insertAdjacentHTML("beforeend", snackbar);
 
 			setTimeout(function() {
-				document.querySelector(".snackbar").remove();
+				document.querySelector(domStrings.snackbar).remove();
 			}, 3000);
 		},
 
@@ -90,7 +142,7 @@ const View = (function() {
 		addBookItem: function(obj) {
 			let html, element;
 
-			element = ".book__list";
+			element = domStrings.bookContainer;
 			html = `
 			<div class="book" id="book-${obj.id}">
 				<div class="book__content">
@@ -109,23 +161,51 @@ const View = (function() {
 			document.querySelector(element).insertAdjacentHTML("beforeend", html);
 		},
 
-		// 4. Removing a book item from the ui
+		// 4. Populate the ui
+		populateBookList: function(obj) {
+			let html = "";
+
+			obj.forEach(element => {
+				html += `
+				<div class="book" id="book-${element.id}">
+					<div class="book__content">
+						<div class="book__title"><span class="book__label">Name:</span>${element.title}</div>
+						<div class="book__author"><span class="book__label">Author:</span>${element.author}</div>
+						<div class="book__number"><span class="book__label">ISBN&nbsp;:</span>${element.isbn}</div>
+					</div>
+					<div class="book__delete">
+						<button class="book__delete--btn">
+							<i class="ion-ios-close-outline"></i>
+						</button>
+					</div>
+				</div>`;
+			});
+
+			document.querySelector(domStrings.bookContainer).innerHTML = html;
+		},
+
+		// 5. Removing a book item from the ui
 		deleteBookItem: function(selectorId) {
 			const el = document.getElementById(selectorId);
 			el.parentNode.removeChild(el);
 		},
 
-		// 5. Clearing the inputs
+		// 6. Clearing the inputs
 		clearInputFields: function() {
 			let field;
 
-			field = document.getElementById("title");
+			field = document.getElementById(domStrings.title);
 
 			field.value = "";
-			document.getElementById("author").value = "";
-			document.getElementById("isbn").value = "";
+			document.getElementById(domStrings.author).value = "";
+			document.getElementById(domStrings.isbn).value = "";
 
 			field.focus();
+		},
+
+		// 7. Get the dom strings
+		getDomStrings: function() {
+			return domStrings;
 		}
 	};
 })();
@@ -134,23 +214,24 @@ const View = (function() {
 // Controller
 // ///////////////////////////////////////////////////////////////
 
-const Controller = (function(md, ui) {
+const Controller = (function(md, ui, ls) {
 	// To do list
 	// 1. Add event handlers
 
 	const setUpEventListener = function() {
-		document.querySelector(".form__button").addEventListener("click", ctrlAddItem);
+		const dom = ui.getDomStrings();
+		document.querySelector(dom.btn).addEventListener("click", ctrlAddItem);
 
 		document.addEventListener("keypress", event => {
 			if (event.keyCode === 13 || event.which === 13) {
 				ctrlAddItem();
 			}
 		});
-		document.querySelector(".right").addEventListener("click", ctrlDeleteItem);
+		document.querySelector(dom.rightContainer).addEventListener("click", ctrlDeleteItem);
 	};
 
 	const ctrlAddItem = function() {
-		let input, newBookItem;
+		let input, newBookItem, book;
 
 		// 1. get data from the input fields
 		input = ui.getInput();
@@ -162,6 +243,9 @@ const Controller = (function(md, ui) {
 
 			// 4. Add item to the view controller
 			ui.addBookItem(newBookItem);
+
+			// 5. Store item to local storage
+			ls.storeItem(newBookItem);
 
 			// 5. Show alert
 			ui.showAlert("Book added! success");
@@ -181,6 +265,7 @@ const Controller = (function(md, ui) {
 		if (itemID) {
 			splitID = itemID.split("-");
 			id = parseInt(splitID[1]);
+			// id = splitID[1];
 
 			// 1. Delete item from the data structure
 			md.removeBookItem(id);
@@ -193,10 +278,15 @@ const Controller = (function(md, ui) {
 	return {
 		init: function() {
 			console.log("Application has started");
+
+			// Fetch items from data structure
+			const items = md.getBookItems();
+			ui.populateBookList(items);
+
 			setUpEventListener();
 		}
 	};
-})(Model, View);
+})(Model, View, Storage);
 Controller.init();
 
 // Data persistence with localstorage
